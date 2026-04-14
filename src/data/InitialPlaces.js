@@ -3,12 +3,12 @@ export const INITIAL_PLACES = [
     id: '1',
     name: 'Edificio de Ingeniería',
     type: 'edificio',
-    description: 'Edificio principal de la Facultad de Ingenieria donde puedes ir si tienes dudas sobre tu ingenieria',
+    description: 'Edificio principal de la Facultad de Ingeniería. Cuenta con aulas modernas, laboratorios de computación y salas de reuniones.',
     latitude: 13.715500,
     longitude: -89.152935,
     photos: [],
     reviews: [
-      { id: 'r1', author: 'Carlos M.', text: 'Muy buenas instalaciones.', rating: 5, date: '2024-01-15' }
+      { id: 'r1', author: 'Carlos M.', text: 'Muy buenas instalaciones, las aulas son amplias.', rating: 5, date: '2024-01-15' }
     ],
   },
   {
@@ -26,7 +26,7 @@ export const INITIAL_PLACES = [
   {
     id: '3',
     name: 'Colecturia',
-    type: 'Oficina',
+    type: 'edificio',
     description: 'Colecturia donde los estudiantes realizan sus pagos tales como mensualidades',
     latitude: 13.716332444516762,
     longitude:  -89.15370149838405,
@@ -35,137 +35,76 @@ export const INITIAL_PLACES = [
   },
   {
     id: '4',
-    name: 'Edificio CDIU',
-    type: 'edificio',
-    description: 'Aqui puedes encontrar asistencia academica y nuevo ingreso',
-    latitude: 13.714987312152395,
-    longitude: -89.15342896848435,
+    name: 'Cafetería Centrallll',
+    type: 'oficina',
+    description: 'Principal área de alimentación del campus. Ofrece menú variado a precios accesibles para estudiantes.',
+    latitude: 13.6927,
+    longitude: -89.2174,
     photos: [],
     reviews: [
-      { id: 'r3', author: 'Pedro R.', text: 'Atencion eficiente y respuestas concretas.', rating: 4, date: '2024-03-05' }
+      { id: 'r3', author: 'Pedro R.', text: 'La comida es buena y el precio es razonable.', rating: 4, date: '2024-03-05' }
     ],
   },
   {
     id: '5',
-    name: 'Aula Magna A',
+    name: 'Aula Magna',
     type: 'salon',
-    description: 'Auditorio de la universidad para eventos, conferencias y graduaciones. Capacidad muy amplia de personas.',
-    latitude: 13.715967666241076,
-    longitude:  -89.15370538830912,
+    description: 'Auditorio principal de la universidad para eventos, conferencias y graduaciones. Capacidad para 500 personas.',
+    latitude: 13.6922,
+    longitude: -89.2180,
     photos: [],
     reviews: [],
   },
   {
     id: '6',
-    name: 'Aula Magna B',
-    type: 'Salon',
-    description: 'Auditorio de la universidad para eventos, conferencias y graduaciones. Capacidad muy amplia de personas.',
-    latitude: 13.715707745460872, 
-    longitude: -89.15370874106951,
+    name: 'Oficina de Registro',
+    type: 'oficina',
+    description: 'Oficina encargada de trámites académicos: inscripciones, constancias, certificaciones y más.',
+    latitude: 13.6933,
+    longitude: -89.2176,
     photos: [],
     reviews: [
       { id: 'r4', author: 'Ana G.', text: 'El personal es amable y atiende rápido.', rating: 4, date: '2024-01-20' }
     ],
   },
-    {
+  {
     id: '7',
-    name: 'Edificio A',
-    type: 'edificio',
-    description: 'Edificio A cuenta con 2 pisos, donde si tu numero de salon empieza con "1" es en la primera planta. y si empieza con "2" es es en la segunda planta.',
-    latitude: 13.716028851778006,  
-    longitude: -89.15341908885694,
+    name: 'Edificio 6 del CITT',
+    type: 'Laboratorios',
+    description: 'Centro de innovación e investigación de laboratorios de distintas carreras y campos.',
+    latitude: 13.714809081150907,
+    longitude: -89.15527584329048,
     photos: [],
-    reviews: [
-      { id: 'r4', author: 'Omari M.', text: 'Salones muy amplios', rating: 4, date: '2024-01-20' }
-    ],
+    reviews: [],
   },
-      {
+  {
     id: '8',
-    name: 'Edificio B',
-    type: 'edificio',
-    description: 'Edificio B cuenta con 2 pisos, donde si tu numero de salon empieza con "1" es en la primera planta. y si empieza con "2" es es en la segunda planta.',
-    latitude: 13.715787157282824, 
-    longitude: -89.1533380546811,
+    name: 'Cafeteria del CITT',
+    type: 'Cafeteria',
+    description: 'Espacio de descanzo y alimentacion para los estudiantes y maestros',
+    latitude: 13.714652737090084,
+    longitude: -89.15575864088909,
     photos: [],
-    reviews: [
-      { id: 'r4', author: 'Omari M.', text: 'Salones muy amplios', rating: 4, date: '2024-01-20' }
-    ],
+    reviews: [],
   },
-        {
+  {
     id: '9',
-    name: 'Edificio C',
-    type: 'edificio',
-    description: 'Edificio C cuenta con 2 pisos, donde si tu numero de salon empieza con "1" es en la primera planta. y si empieza con "2" es es en la segunda planta.',
-    latitude: 13.715259309165518, 
-    longitude: -89.15325802212296,
+    name: 'Edificio de Investigación e Innovación en Electrónica',
+    type: 'Edificio',
+    description: 'centro especializado en el diseño, desarrollo, investigación y soporte de tecnologías electrónicas. Cuenta con laboratorios equipados para automatización, robótica industrial, sistemas embebidos, biomédica y telecomunicaciones, ofreciendo soluciones técnicas a empresas y formación académica',
+    latitude: 13.715893648511912,
+    longitude: -89.15523581017865,
     photos: [],
-    reviews: [
-      { id: 'r4', author: 'Juan M.', text: 'la limpieza es constante en las aulas', rating: 5, date: '2024-01-20' }
-    ],
+    reviews: [],
   },
-
   {
-    id: '10',
-    name: 'Baños/Sanitarios',
-    type: 'otros',
-    description: 'Servicios sanitarios muy bien ubicados y con limpieza constante',
-    latitude: 13.715485808712613, 
-    longitude: -89.15342828338461,
+    id: '9',
+    name: 'Observatorio Micro Macro',
+    type: 'Edificio',
+    description: 'Centro de investigacion y observavion de la astrologia ademas de ser un taller impartido por especialista en microbiología celular, tambien del conocimiento básico sobre el universo microscópico.',
+    latitude: 13.715917335379313,
+    longitude: -89.15593321974453,
     photos: [],
-    reviews: [
-      { id: 'r4', author: 'Richard W.', text: 'muy buena higiene del lugar', rating: 5, date: '2024-01-20' }
-    ],
-  },
-
-  {
-    id: '11',
-    name: 'Cajero BancoAgricola',
-    type: 'otros',
-    description: 'Cajero automatico para realizar retiros de efectivo',
-    latitude: 13.7149545273517, 
-    longitude: -89.15336503003142,
-    photos: [],
-    reviews: [
-      { id: 'r4', author: 'Andrea C.', text: 'Muy bien ubicado, me gusta que nunca se llena jajaja', rating: 5, date: '2024-01-20' }
-    ],
-  },
-
-    {
-    id: '12',
-    name: 'Cancha de baloncesto',
-    type: 'otros',
-    description: '2 amplias canchas de baloncesto',
-    latitude: 13.71562141144397, 
-    longitude: -89.15239751446792,
-    photos: [],
-    reviews: [
-      { id: 'r4', author: 'Luis O.', text: 'bastante amplias, se arman buenos partidos siempre', rating: 5, date: '2024-01-20' }
-    ],
-  },
-
-  {
-    id: '13',
-    name: 'Cancha de futbol',
-    type: 'otros',
-    description: 'cancha engramada para amantes del futbol',
-    latitude: 13.715853040334155, 
-    longitude: -89.1524346715429,
-    photos: [],
-    reviews: [
-      { id: 'r4', author: 'Mario M.', text: 'cesped de muy buena calidad', rating: 5, date: '2024-01-20' }
-    ],
-  },
-
-  {
-    id: '14',
-    name: 'Pinacoteca y sala de estudio',
-    type: 'edificio',
-    description: 'muy amplia y equipada pinacoteca para pasar el rato o estudiar, en la parte de abajo se encuentra la sala de estudio equipada con cubiculos y aire acondicionado',
-    latitude: 13.716777261821038,  
-    longitude: -89.15320584078945,
-    photos: [],
-    reviews: [
-      { id: 'r4', author: 'Jose A.', text: 'me gustaria que hubiera mas ventiladores en la pinacoteca', rating: 3, date: '2024-01-20' }
-    ],
+    reviews: [],
   },
 ];
