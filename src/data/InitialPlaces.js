@@ -98,7 +98,7 @@ export const INITIAL_PLACES = [
     reviews: [],
   },
   {
-    id: '9',
+    id: '10',
     name: 'Observatorio Micro Macro',
     type: 'Edificio',
     description: 'Centro de investigacion y observavion de la astrologia ademas de ser un taller impartido por especialista en microbiología celular, tambien del conocimiento básico sobre el universo microscópico.',
