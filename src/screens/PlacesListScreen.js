@@ -14,7 +14,7 @@ import {
 import PlaceCard from '../components/PlaceCard';
 import { loadPlaces } from '../storage/storage';
 
-const TYPE_FILTERS = ['todos', 'edificio', 'salon', 'laboratorio', 'oficina'];
+const TYPE_FILTERS = ['todos', 'edificio', 'salon', 'laboratorio', 'oficina', 'otros'];
 
 function getDistance(lat1, lon1, lat2, lon2) {
   const R = 6371000;
