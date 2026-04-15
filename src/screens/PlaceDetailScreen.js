@@ -59,19 +59,26 @@ export default function PlaceDetailScreen({ route, navigation }) {
     }, [placeId])
   );
 
-  useEffect(() => {
-    let subscription;
-    const subscribe = async () => {
-      subscription = Magnetometer.addListener(data => {
-        let angle = Math.atan2(data.y, data.x) * (180 / Math.PI);
-        if (angle < 0) angle += 360;
-        setMagnetometer(Math.round(angle));
+useEffect(() => {
+  let subscription;
+  const subscribe = async () => {
+    subscription = Magnetometer.addListener(data => {
+      let angle = Math.atan2(-data.x, data.y) * (180 / Math.PI);
+      
+      if (angle < 0) angle += 360;
+
+      setMagnetometer(prev => {
+        let diff = angle - prev;
+        if (diff > 180) diff -= 360;
+        if (diff < -180) diff += 360;
+        return Math.round(prev + diff * 0.2);
       });
-      Magnetometer.setUpdateInterval(100);
-    };
-    subscribe();
-    return () => subscription && subscription.remove();
-  }, []);
+    });
+    Magnetometer.setUpdateInterval(100);
+  };
+  subscribe();
+  return () => subscription && subscription.remove();
+}, []);
 
   useEffect(() => {
     (async () => {
@@ -117,31 +124,41 @@ export default function PlaceDetailScreen({ route, navigation }) {
     ]);
   };
 
-  const getNavigationData = () => {
-    if (!userLocation || !place) return { direction: "Esperando GPS...", distance: "--" };
-    const lat1 = userLocation.latitude * Math.PI / 180;
-    const lon1 = userLocation.longitude * Math.PI / 180;
-    const lat2 = place.latitude * Math.PI / 180;
-    const lon2 = place.longitude * Math.PI / 180;
-    const dLon = lon2 - lon1;
-    const y = Math.sin(dLon) * Math.cos(lat2);
-    const x = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(dLon);
-    let bearing = (Math.atan2(y, x) * (180 / Math.PI) + 360) % 360;
-    const distance = calculateDistance(userLocation.latitude, userLocation.longitude, place.latitude, place.longitude);
-    let relativeAngle = (bearing - magnetometer + 360) % 360;
-    let arrow = "";
-    if (relativeAngle > 337.5 || relativeAngle <= 22.5) arrow = "⬆️ Sigue recto";
-    else if (relativeAngle > 22.5 && relativeAngle <= 67.5) arrow = "↗️ Leve a la derecha";
-    else if (relativeAngle > 67.5 && relativeAngle <= 112.5) arrow = "➡️ Gira a la derecha";
-    else if (relativeAngle > 112.5 && relativeAngle <= 247.5) arrow = "⬇️ Está detrás de ti";
-    else if (relativeAngle > 247.5 && relativeAngle <= 292.5) arrow = "⬅️ Gira a la izquierda";
-    else if (relativeAngle > 292.5 && relativeAngle <= 337.5) arrow = "↖️ Leve a la izquierda";
+const getNavigationData = () => {
+  if (!userLocation || !place) return { direction: "Esperando GPS...", distance: "--" };
 
-    return { 
-      direction: arrow, 
-      distance: distance < 1000 ? `${Math.round(distance)} m` : `${(distance/1000).toFixed(2)} km` 
-    };
+  const lat1 = userLocation.latitude * Math.PI / 180;
+  const lon1 = userLocation.longitude * Math.PI / 180;
+  const lat2 = place.latitude * Math.PI / 180;
+  const lon2 = place.longitude * Math.PI / 180;
+  const dLon = lon2 - lon1;
+  const y = Math.sin(dLon) * Math.cos(lat2);
+  const x = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(dLon);
+  
+  let bearing = (Math.atan2(y, x) * (180 / Math.PI) + 360) % 360;
+  const distance = calculateDistance(userLocation.latitude, userLocation.longitude, place.latitude, place.longitude);
+  let relativeAngle = (bearing - magnetometer + 360) % 360;
+
+  let arrow = "";
+  if (relativeAngle <= 30 || relativeAngle >= 330) {
+    arrow = "⬆️ Sigue recto";
+  } else if (relativeAngle > 30 && relativeAngle <= 75) {
+    arrow = "↗️ Leve a la derecha";
+  } else if (relativeAngle > 75 && relativeAngle <= 105) {
+    arrow = "➡️ Gira a la derecha";
+  } else if (relativeAngle > 105 && relativeAngle <= 255) {
+    arrow = "⬇️ Está detrás de ti";
+  } else if (relativeAngle > 255 && relativeAngle <= 285) {
+    arrow = "⬅️ Gira a la izquierda";
+  } else if (relativeAngle > 285 && relativeAngle < 330) {
+    arrow = "↖️ Leve a la izquierda";
+  }
+
+  return { 
+    direction: arrow, 
+    distance: distance < 1000 ? `${Math.round(distance)} m` : `${(distance/1000).toFixed(2)} km` 
   };
+};
 
   if (loading || !place) {
     return (
