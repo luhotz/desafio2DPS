@@ -2,10 +2,10 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import StarRating from './StarRating';
 
 const TYPE_LABELS = {
-  edificio: '🏢 Edificio',
-  salon: '🎓 Salón',
-  laboratorio: '🔬 Laboratorio',
-  oficina: '🏛️ Oficina',
+  edificio: ' Edificio',
+  salon: ' Salón',
+  laboratorio: ' Laboratorio',
+  oficina: ' Oficina',
 };
 
 function getAverageRating(reviews) {

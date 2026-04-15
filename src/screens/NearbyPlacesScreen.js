@@ -6,10 +6,10 @@ import {
 import * as Location from 'expo-location';
 import PlaceCard from '../components/PlaceCard';
 import { loadPlaces } from '../storage/storage';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
+// Función para calcular distancia (Haversine)
 function getDistance(lat1, lon1, lat2, lon2) {
-  const R = 6371000;
+  const R = 6371000; 
   const dLat = ((lat2 - lat1) * Math.PI) / 180;
   const dLon = ((lon2 - lon1) * Math.PI) / 180;
   const a =
@@ -27,52 +27,42 @@ export default function NearbyPlacesScreen({ navigation }) {
   const [error, setError] = useState(null);
   const [tracking, setTracking] = useState(true);
   const subscriptionRef = useRef(null);
-  const [isDebug, setIsDebug] = useState(false);
 
   const startTracking = async () => {
-  setLoading(true);
-  setError(null);
+    setLoading(true);
+    setError(null);
 
-  try {
-    const { status } = await Location.requestForegroundPermissionsAsync();
-    if (status !== 'granted') {
-      setError('Permiso de ubicación denegado.');
+    try {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        setError('Permiso de ubicación denegado.');
+        setLoading(false);
+        return;
+      }
+
+      const data = await loadPlaces();
+
+      // Obtener ubicación inicial real
+      const initial = await Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.High
+      });
+      
+      updatePlacesList(initial.coords, data);
       setLoading(false);
-      return;
-    }
 
-    const data = await loadPlaces();
+      // Iniciar seguimiento en vivo
+      subscriptionRef.current = await Location.watchPositionAsync(
+        { accuracy: Location.Accuracy.High, timeInterval: 3000, distanceInterval: 2 },
+        (newLocation) => { 
+          updatePlacesList(newLocation.coords, data); 
+        }
+      );
 
-    // Verificar si hay ubicación simulada de debug
-    const debugJson = await AsyncStorage.getItem('@debug_location');
-    
-    if (debugJson) {
-      // Usar ubicación simulada
-      const debugCoords = JSON.parse(debugJson);
-      updatePlacesList(debugCoords, data);
+    } catch (e) {
+      setError('No se pudo obtener tu ubicación.');
       setLoading(false);
-      setIsDebug(true);
-      return; // No iniciar watchPosition en modo debug
     }
-
-    // GPS real
-    setIsDebug(false);
-    const initial = await Location.getCurrentPositionAsync({
-      accuracy: Location.Accuracy.High
-    });
-    updatePlacesList(initial.coords, data);
-    setLoading(false);
-
-    subscriptionRef.current = await Location.watchPositionAsync(
-      { accuracy: Location.Accuracy.High, timeInterval: 3000, distanceInterval: 2 },
-      (newLocation) => { updatePlacesList(newLocation.coords, data); }
-    );
-
-  } catch (e) {
-    setError('No se pudo obtener tu ubicación.');
-    setLoading(false);
-  }
-};
+  };
 
   const updatePlacesList = (coords, data) => {
     setLocation(coords);
@@ -104,7 +94,6 @@ export default function NearbyPlacesScreen({ navigation }) {
   useEffect(() => {
     startTracking();
     return () => {
-      // Detener el rastreo al salir de la pantalla
       if (subscriptionRef.current) {
         subscriptionRef.current.remove();
       }
@@ -137,7 +126,7 @@ export default function NearbyPlacesScreen({ navigation }) {
   return (
     <SafeAreaView style={styles.container}>
 
-      {/* Banner de ubicación */}
+      {/* Banner de ubicación real */}
       {location && (
         <View style={styles.locationBanner}>
           <View style={styles.locationRow}>
@@ -156,7 +145,7 @@ export default function NearbyPlacesScreen({ navigation }) {
       {/* Lugar más cercano destacado */}
       {closest && (
         <View style={styles.closestBanner}>
-          <Text style={styles.closestLabel}>📌 Lugar más cercano ahora</Text>
+          <Text style={styles.closestLabel}> Lugar más cercano ahora</Text>
           <Text style={styles.closestName}>{closest.name}</Text>
           <Text style={styles.closestDistance}>
             {closest.distance < 1000
@@ -166,7 +155,7 @@ export default function NearbyPlacesScreen({ navigation }) {
         </View>
       )}
 
-      {/* Botón pausar/reanudar */}
+      {/* Botón de control de rastreo */}
       <TouchableOpacity
         style={[styles.trackingButton, !tracking && styles.trackingButtonOff]}
         onPress={tracking ? stopTracking : resumeTracking}
@@ -176,11 +165,11 @@ export default function NearbyPlacesScreen({ navigation }) {
         </Text>
       </TouchableOpacity>
 
-      {/* Lista de lugares */}
+      {/* Lista de lugares ordenada por cercanía */}
       <FlatList
         data={places}
         keyExtractor={item => item.id}
-        renderItem={({ item, index }) => (
+        renderItem={({ item }) => (
           <PlaceCard
             place={item}
             distance={item.distance}

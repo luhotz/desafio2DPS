@@ -1,4 +1,3 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 import * as Location from 'expo-location';
 import { useCallback, useEffect, useState } from 'react';
@@ -16,6 +15,7 @@ import { loadPlaces } from '../storage/storage';
 
 const TYPE_FILTERS = ['todos', 'edificio', 'salon', 'laboratorio', 'oficina', 'otros'];
 
+// Función de distancia (Haversine)
 function getDistance(lat1, lon1, lat2, lon2) {
   const R = 6371000;
   const dLat = ((lat2 - lat1) * Math.PI) / 180;
@@ -35,28 +35,25 @@ export default function PlacesListScreen({ navigation }) {
   const [filter, setFilter] = useState('todos');
   const [userLocation, setUserLocation] = useState(null);
 
-  // Obtener ubicación del usuario (o debug)
+  // Obtener ubicación real del usuario
   useEffect(() => {
     const fetchLocation = async () => {
       try {
-        const debugJson = await AsyncStorage.getItem('@debug_location');
-        if (debugJson) {
-          setUserLocation(JSON.parse(debugJson));
-          return;
-        }
         const { status } = await Location.requestForegroundPermissionsAsync();
         if (status !== 'granted') return;
+
         const loc = await Location.getCurrentPositionAsync({
           accuracy: Location.Accuracy.Balanced,
         });
         setUserLocation(loc.coords);
       } catch (e) {
-        console.log('No se pudo obtener ubicación:', e);
+        console.log('Error al obtener ubicación real:', e);
       }
     };
     fetchLocation();
   }, []);
 
+  // Cargar lugares cada vez que la pantalla gane el foco
   useFocusEffect(
     useCallback(() => {
       setLoading(true);
@@ -67,7 +64,7 @@ export default function PlacesListScreen({ navigation }) {
     }, [])
   );
 
-  // Agregar distancia a cada lugar si hay ubicación
+  // Mapear lugares con sus distancias calculadas
   const placesWithDistance = places.map(p => ({
     ...p,
     distance: userLocation
@@ -75,6 +72,7 @@ export default function PlacesListScreen({ navigation }) {
       : undefined,
   }));
 
+  // Lógica de búsqueda y filtrado por categoría
   const filtered = placesWithDistance.filter(p => {
     const matchSearch = p.name.toLowerCase().includes(search.toLowerCase()) ||
       p.description.toLowerCase().includes(search.toLowerCase());
@@ -93,6 +91,7 @@ export default function PlacesListScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
+      {/* Buscador */}
       <TextInput
         style={styles.searchInput}
         placeholder="🔍 Buscar lugar..."
@@ -100,6 +99,8 @@ export default function PlacesListScreen({ navigation }) {
         onChangeText={setSearch}
         placeholderTextColor="#999"
       />
+
+      {/* Chips de Filtro */}
       <View style={styles.filterRow}>
         {TYPE_FILTERS.map(t => (
           <Text
@@ -111,6 +112,8 @@ export default function PlacesListScreen({ navigation }) {
           </Text>
         ))}
       </View>
+
+      {/* Lista Principal */}
       <FlatList
         data={filtered}
         keyExtractor={item => item.id}

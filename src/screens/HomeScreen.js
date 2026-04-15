@@ -9,7 +9,6 @@ const MENU_ITEMS = [
   { label: 'Ver Todos los Lugares', icon: '🏛️', screen: 'PlacesList', color: '#1565C0' },
   { label: 'Lugares Cercanos (GPS)', icon: '📍', screen: 'NearbyPlaces', color: '#2E7D32' },
   // Al final del MENU_ITEMS array:
-{ label: '🧪 Simular Ubicación (Debug)', icon: '🧪', screen: 'Debug', color: '#6A1B9A' },
 ];
 
 export default function HomeScreen({ navigation }) {
