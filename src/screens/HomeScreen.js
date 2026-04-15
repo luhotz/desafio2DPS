@@ -44,7 +44,7 @@ export default function HomeScreen({ navigation }) {
         {/* Info */}
         <View style={styles.infoBox}>
           <Text style={styles.infoTitle}>ℹ️ ¿Cómo usar la app?</Text>
-          <Text style={styles.infoText}>• Explora todos los edificios y salones del campus.</Text>
+          <Text style={styles.infoText}>• Explora distintos lugares del campus.</Text>
           <Text style={styles.infoText}>• Usa el GPS para ver los lugares más cercanos a ti.</Text>
           <Text style={styles.infoText}>• Agrega fotos y reseñas de los lugares.</Text>
           <Text style={styles.infoText}>• Todo funciona sin conexión a internet.</Text>

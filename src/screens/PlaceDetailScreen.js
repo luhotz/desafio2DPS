@@ -29,20 +29,17 @@ function getAverageRating(reviews) {
   return reviews.reduce((sum, r) => sum + (r.rating || 0), 0) / reviews.length;
 }
 
-// Función auxiliar para calcular distancia offline (Haversine)
 function calculateDistance(lat1, lon1, lat2, lon2) {
-  const R = 6371e3; // Radio de la tierra en metros
+  const R = 6371e3;
   const phi1 = lat1 * Math.PI / 180;
   const phi2 = lat2 * Math.PI / 180;
   const dPhi = (lat2 - lat1) * Math.PI / 180;
   const dLambda = (lon2 - lon1) * Math.PI / 180;
-
   const a = Math.sin(dPhi / 2) * Math.sin(dPhi / 2) +
             Math.cos(phi1) * Math.cos(phi2) *
             Math.sin(dLambda / 2) * Math.sin(dLambda / 2);
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-  return R * c; // Distancia en metros
+  return R * c;
 }
 
 export default function PlaceDetailScreen({ route, navigation }) {
@@ -80,13 +77,10 @@ export default function PlaceDetailScreen({ route, navigation }) {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') return;
-      
-      // Suscribirse a cambios de ubicación para que la distancia sea fluida
       const locationSub = await Location.watchPositionAsync(
         { accuracy: Location.Accuracy.High, distanceInterval: 1 },
         (loc) => setUserLocation(loc.coords)
       );
-      
       return () => locationSub.remove();
     })();
   }, []);
@@ -125,22 +119,15 @@ export default function PlaceDetailScreen({ route, navigation }) {
 
   const getNavigationData = () => {
     if (!userLocation || !place) return { direction: "Esperando GPS...", distance: "--" };
-
-    // 1. Cálculo de Rumbo (Bearing)
     const lat1 = userLocation.latitude * Math.PI / 180;
     const lon1 = userLocation.longitude * Math.PI / 180;
     const lat2 = place.latitude * Math.PI / 180;
     const lon2 = place.longitude * Math.PI / 180;
-
     const dLon = lon2 - lon1;
     const y = Math.sin(dLon) * Math.cos(lat2);
     const x = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(dLon);
     let bearing = (Math.atan2(y, x) * (180 / Math.PI) + 360) % 360;
-
-    // 2. Cálculo de Distancia
     const distance = calculateDistance(userLocation.latitude, userLocation.longitude, place.latitude, place.longitude);
-
-    // 3. Dirección relativa
     let relativeAngle = (bearing - magnetometer + 360) % 360;
     let arrow = "";
     if (relativeAngle > 337.5 || relativeAngle <= 22.5) arrow = "⬆️ Sigue recto";
@@ -190,7 +177,12 @@ export default function PlaceDetailScreen({ route, navigation }) {
 
         {/* Info */}
         <View style={styles.infoSection}>
-          <Text style={styles.name}>{place.name}</Text>
+          <View style={styles.headerRow}>
+            <Text style={styles.name}>{place.name}</Text>
+            <Text style={styles.coordsText}>
+              {place.latitude.toFixed(4)}, {place.longitude.toFixed(4)}
+            </Text>
+          </View>
           <Text style={styles.type}>{TYPE_LABELS[place.type] || place.type}</Text>
           <View style={styles.ratingRow}>
             <StarRating rating={Math.round(avgRating)} size={22} />
@@ -201,15 +193,15 @@ export default function PlaceDetailScreen({ route, navigation }) {
           <Text style={styles.description}>{place.description}</Text>
         </View>
 
-        {/* BRÚJULA CON DISTANCIA */}
+        {/* Orientación */}
         <View style={styles.compassSection}>
-          <Text style={styles.sectionTitle}>🧭 Navegación Offline</Text>
+          <Text style={styles.sectionTitle}> Orientacion </Text>
           <View style={styles.compassCard}>
             <Text style={styles.distanceBadge}>{nav.distance}</Text>
             <Text style={styles.directionText}>{nav.direction}</Text>
             <Text style={styles.compassSubtext}>Apunta con tu teléfono para orientarte</Text>
           </View>
-          <Text style={styles.offlineTag}>GPS SATELITAL ACTIVO • SIN CONEXIÓN</Text>
+          <Text style={styles.offlineTag}>Manten tu telefono de forma horizontal, la brujula puede cometer errores</Text>
         </View>
 
         {/* Reseñas */}
@@ -254,8 +246,10 @@ const styles = StyleSheet.create({
   addPhotoButton: { backgroundColor: '#1565C0', margin: 16, padding: 12, borderRadius: 10, alignItems: 'center' },
   addPhotoText: { color: '#fff', fontWeight: 'bold' },
   infoSection: { backgroundColor: '#fff', marginHorizontal: 16, marginBottom: 16, borderRadius: 12, padding: 16, elevation: 2 },
-  name: { fontSize: 22, fontWeight: 'bold', color: '#003087' },
-  type: { fontSize: 14, color: '#666', marginTop: 4 },
+  headerRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 },
+  name: { fontSize: 20, fontWeight: 'bold', color: '#003087', flex: 1 },
+  coordsText: { fontSize: 12, color: '#999', fontFamily: 'monospace' },
+  type: { fontSize: 14, color: '#666' },
   ratingRow: { flexDirection: 'row', alignItems: 'center', marginTop: 8 },
   ratingText: { marginLeft: 8, color: '#555', fontSize: 14 },
   description: { fontSize: 15, color: '#333', marginTop: 12, lineHeight: 22 },

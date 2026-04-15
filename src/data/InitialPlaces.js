@@ -8,7 +8,7 @@ export const INITIAL_PLACES = [
     longitude: -89.152935,
     photos: [],
     reviews: [
-      { id: 'r1', author: 'Carlos M.', text: 'Muy buenas instalaciones, las aulas son amplias.', rating: 5, date: '2024-01-15' }
+      { id: 'r1', author: 'Carlos M.', text: 'la antencion es muy rapida y concreta.', rating: 5, date: '2024-01-15' }
     ],
   },
   {
@@ -35,40 +35,58 @@ export const INITIAL_PLACES = [
   },
   {
     id: '4',
-    name: 'Cafetería Centrallll',
-    type: 'oficina',
-    description: 'Principal área de alimentación del campus. Ofrece menú variado a precios accesibles para estudiantes.',
-    latitude: 13.6927,
-    longitude: -89.2174,
+    name: 'Edificio CDIU',
+    type: 'edificio',
+    description: 'Edificio principal para obtener informacion de asistencia academica y nuevo ingreso.',
+    latitude: 13.71501527940736, 
+    longitude: -89.15340166049943,
     photos: [],
     reviews: [
-      { id: 'r3', author: 'Pedro R.', text: 'La comida es buena y el precio es razonable.', rating: 4, date: '2024-03-05' }
+      { id: 'r3', author: 'Pedro R.', text: 'informacion precisa y rapida.', rating: 4, date: '2024-03-05' }
     ],
   },
   {
     id: '5',
-    name: 'Aula Magna',
+    name: 'Aula Magna A',
     type: 'salon',
-    description: 'Auditorio principal de la universidad para eventos, conferencias y graduaciones. Capacidad para 500 personas.',
-    latitude: 13.6922,
-    longitude: -89.2180,
+    description: 'Auditorio de la universidad para eventos, conferencias y graduaciones.',
+    latitude: 13.71596068500375, 
+    longitude: -89.15371282238232,
     photos: [],
     reviews: [],
   },
   {
     id: '6',
-    name: 'Oficina de Registro',
-    type: 'oficina',
-    description: 'Oficina encargada de trámites académicos: inscripciones, constancias, certificaciones y más.',
-    latitude: 13.6933,
-    longitude: -89.2176,
+    name: 'Aula Magna B',
+    type: 'salon',
+    description: 'Auditorio de la universidad para eventos, conferencias y graduaciones.',
+    latitude: 13.715714923672582, 
+    longitude: -89.15369336274588,
     photos: [],
-    reviews: [
-      { id: 'r4', author: 'Ana G.', text: 'El personal es amable y atiende rápido.', rating: 4, date: '2024-01-20' }
-    ],
+    reviews: [],
   },
   {
     id: '7',
+    name: 'Edificio de aulas A',
+    type: 'edificio',
+    description: 'Edificio amplio de 2 pisos, si tu numero de salon empieza por "1" busca en la primera planta, si tu numero de salon empieza con "2" buscan en la segunda planta',
+    latitude: 13.71601815530869,  
+    longitude: -89.15340536012674,
+    photos: [],
+    reviews: [],
+  },
+  {
+    id: '8',
+    name: 'Edificio de aulas B',
+    type: 'edificio',
+    description: 'Edificio amplio de 2 pisos, si tu numero de salon empieza por "1" busca en la primera planta, si tu numero de salon empieza con "2" buscan en la segunda planta',
+    latitude: 13.71578298068237, 
+    longitude: -89.15343805231595,
+    photos: [],
+    reviews: [],
+  },
+  {
+    id: '9',
     name: 'Edificio 6 del CITT',
     type: 'Laboratorios',
     description: 'Centro de innovación e investigación de laboratorios de distintas carreras y campos.',
@@ -78,7 +96,7 @@ export const INITIAL_PLACES = [
     reviews: [],
   },
   {
-    id: '8',
+    id: '10',
     name: 'Cafeteria del CITT',
     type: 'Cafeteria',
     description: 'Espacio de descanzo y alimentacion para los estudiantes y maestros',
@@ -88,7 +106,7 @@ export const INITIAL_PLACES = [
     reviews: [],
   },
   {
-    id: '9',
+    id: '11',
     name: 'Edificio de Investigación e Innovación en Electrónica',
     type: 'Edificio',
     description: 'centro especializado en el diseño, desarrollo, investigación y soporte de tecnologías electrónicas. Cuenta con laboratorios equipados para automatización, robótica industrial, sistemas embebidos, biomédica y telecomunicaciones, ofreciendo soluciones técnicas a empresas y formación académica',
@@ -98,7 +116,7 @@ export const INITIAL_PLACES = [
     reviews: [],
   },
   {
-    id: '10',
+    id: '12',
     name: 'Observatorio Micro Macro',
     type: 'Edificio',
     description: 'Centro de investigacion y observavion de la astrologia ademas de ser un taller impartido por especialista en microbiología celular, tambien del conocimiento básico sobre el universo microscópico.',
